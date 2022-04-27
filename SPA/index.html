@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPA</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        ul {
+            display: flex;
+        }
+        li {
+            margin-right: 10px;
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="#" id="accueil">Accueil </a></li>
+        <li><a href="#" id="nous">A propos de nous </a></li>
+        <li><a href="#" id="contact">nous contacter </a></li>
+        <li><a href="#" id="equipe">Equipe</a></li>
+    </ul>
+    <h1></h1>
+    <p></p>
+    <script>
+        function testAjax(id) {
+            $("#" + id).click(function() {
+                $.ajax({
+                    url: id + ".txt",
+                    datatype : "text",
+                    success : function(data) {
+                        arr = data.split("\n");
+                        $("title").text("SPA | " + arr[0]);
+                        $("h1").text(arr[0]);
+                        $("p").text(arr[1]);
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    }
+                });
+            }); 
+        } 
+       
+        $("#accueil").click(function() {
+                $.ajax({
+                    url: "accueil.json",
+                    datatype : "json",
+                    success : function(data) {
+                        console.log(data);
+                        data.stagiaire.forEach(element => {
+                            console.log(data.stagiaire);
+                            console.log(data.stagiaire.nom);
+                            
+                        });
+                        // arr = data.split("\n");
+                        // $("title").text("SPA | " + arr[0]);
+                        // $("h1").text(arr[0]);
+                        // $("p").text(arr[1]);
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    }
+                });
+            }); 
+
+        //testAjax("accueil");
+        testAjax("nous");
+        testAjax("contact");
+        testAjax("equipe");
+    </script>
+</body>
+</html>

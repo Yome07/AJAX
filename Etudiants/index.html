@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="listeNoms"></div>
+    <script>
+        let listeIds = [
+                {
+                    id:"Etudiants",
+                    nom:"étudiants",
+                    texte:"Afficher la liste des étudiants"
+                },
+                {
+                    id:"Admis",
+                    nom:"admis",
+                    texte:"Afficher la liste des étudiants admis"
+                },
+                {
+                    id:"NonAdmis",
+                    nom:"non admis",
+                    texte:"Afficher la liste des étudiants non admis"
+                }
+            ];
+        $.each(listeIds, function (index, value) { 
+            content = "<a href='#' id='" + listeIds[index].id + "'>" + listeIds[index].texte + "  </a>";
+            $("body").prepend(content);
+        });
+
+
+        $.each(listeIds, function (index, value) { 
+             listeNom(value.id);
+        });
+
+        function listeNom(id) {
+            
+            $("#" + id).click(function() {
+                $.ajax({
+                    url: "etudiants.json",
+                    dataType: "json",
+                    success : function(data) {
+                        $.each(listeIds, function (index, value) { 
+                             if (id == value.id) {
+                                listeNoms ="<h1>Liste des " + listeIds[index].nom + "</h1><ul>";
+                             }
+                        });
+
+                        $.each(data.etudiants, function (index,element) {
+                            calculMoyenne(element.notes);
+                            $.each(listeIds, function (index, value) { 
+                                if (id == value.id) {
+
+                                }
+                            });
+                            // listeNoms += "<li>" + element.nom + " " + element.prenom;
+                            // if (id == "Admis"  && moyenne >=10) {
+                            //     listeNoms += " : " + moyenne + "/20";
+                            // }
+                            // if (id == 'NonAdmis' && moyenne < 10) {
+                            //     listeNoms += " : " + moyenne + "/20";
+                            // }
+                                switch (id) {
+                                case "Etudiants": listeNoms += "<li>" + element.nom + " " + element.prenom + "</li>";
+                                    break;
+                                case "Admis": 
+                                    if (moyenne >= 10) {
+                                        listeNoms += "<li>" + element.nom + " " + element.prenom + " : " + moyenne + "/20</li>";
+                                    }
+                                    break;
+                                default:
+                                    if (moyenne < 10) {
+                                        listeNoms += "<li>" + element.nom + " " + element.prenom + " : " + moyenne + "/20</li>";
+                                    }
+                                    break;
+                            }
+                            //listeNoms += "</li>";
+                        });
+                        listeNoms += "</ul>"
+                        $("#listeNoms").html(listeNoms);
+                        
+                    },
+                    error:function(xhr) {
+                        console.log(xhr.status);
+                    }
+                });
+            });
+        }
+
+        function calculMoyenne(notes) {
+            let somme = 0;
+            $.each(notes, function(el, value) {
+                somme += parseInt(value);
+            });
+            moyenne = somme / notes.length;
+        }  
+    </script>
+</body>
+</html>

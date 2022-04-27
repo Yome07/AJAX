@@ -1,0 +1,19 @@
+{
+    "etudiants": [
+        {
+         "nom":"Simpson",
+         "prenom":"Hommer",
+         "notes": [15, 18, 12]
+        },
+        {
+         "nom":"Dupont",
+         "prenom":"Jean",
+         "notes": [10, 8, 12]
+        },
+        {
+         "nom":"Simpson",
+         "prenom":"Bart",
+         "notes": [10, 8, 6]
+        }
+       ]
+}
